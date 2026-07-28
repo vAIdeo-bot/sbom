@@ -1,0 +1,83 @@
+vAIdeo.bot SBOM enrichment — license drift report
+================================================================
+
+WHAT THIS FILE IS (Till Jaeger Q4 follow-up, 2026-05-22).
+
+drift-report.txt is a TRANSPARENCY LOG, not a missing-components
+list. Presence in this report does NOT mean a component is missing
+from NOTICES.txt or the SBOM — every component listed here IS in
+both. This file enumerates the cases where what we declare as the
+component's license differs from what our deep-scanner observes
+in the source tree, with one of two outcomes:
+
+  * multi-license-expected — the source tree contains files with
+    licenses that are NOT the same as the declared package
+    license, but this is by design: the package vendors third-
+    party code (e.g. grpcio vendors zlib + abseil + boringssl
+    fragments) whose original per-file licenses we preserve.
+    These entries are documented + curated and do NOT block the
+    next release push.
+  * blocking — divergence not yet curated. The next push is
+    refused until either curated (with rationale in
+    tools/sbom_drift_curation.json) or corrected (in
+    tools/generate_sbom.py).
+
+Look in NOTICES.txt to see what we actually preserve for any
+component listed here; the TOC at the top of that file lists
+every component with its line number for quick lookup.
+
+================================================================
+
+Total entries:                 3
+  blocking:                    0  (push refuses to ship while > 0)
+  multi-license-expected:      3  (audit-trail only; push not blocked)
+
+license-file detector: fingerprints the LICENSE body content against
+  canonical SPDX text. Strong evidence — always classified as blocking.
+source-header detector: aggregates SPDX-License-Identifier markers
+  observed in actual source files. May be blocking or
+  multi-license-expected depending on tools/sbom_drift_curation.json.
+
+Adversarial-discovery posture: nothing is suppressed. Every divergence
+is recorded here with its classification. multi-license-expected
+entries carry a rationale field documenting why the divergence is
+expected (typically: the source tree IS multi-licensed, and the
+effective license of the shipped binary is determined by build
+configuration rather than by every individual file header).
+
+Audit workflow:
+  - blocking entries must be either curated (add classification field
+    in tools/sbom_drift_curation.json with rationale) or corrected
+    (update tools/generate_sbom.py for the right SPDX expression).
+  - multi-license-expected entries need no action; they are recorded
+    for transparency and propagate into the SBOM as the
+    com.vaideo.bundled-licenses-detected property.
+
+While the blocking count is > 0, steam/push.ps1 refuses to push.
+================================================================
+
+--- multi-license-expected (3) ---
+
+  elliptic-curve-tools 0.2.0  [kind=source-header]
+    purl:     pkg:cargo/elliptic-curve-tools@0.2.0
+    declared: MIT
+    detected: apache-2.0
+    effective_license: MIT (dual Apache-2.0 OR MIT crate; MIT chosen)
+    rationale: Crate Cargo.toml declares 'Apache-2.0 OR MIT'. We comply via MIT. Source-header markers reflect the other OR alternative. Verified via cargo metadata 2026-07-28.
+    files with SPDX markers: 1
+
+  nix 0.29.0  [kind=source-header]
+    purl:     pkg:cargo/nix@0.29.0
+    declared: MIT
+    detected: gpl-2.0+
+    effective_license: MIT
+    rationale: Crate Cargo.toml declares 'MIT' (single) — the declared MIT is correct. The source-header detector flags a divergent SPDX marker in a vendored/test file, not the crate's own license. Verified via cargo metadata 2026-07-28.
+    files with SPDX markers: 1
+
+  vsss-rs 5.4.0  [kind=source-header]
+    purl:     pkg:cargo/vsss-rs@5.4.0
+    declared: MIT
+    detected: apache-2.0
+    effective_license: MIT (dual Apache-2.0 OR MIT crate; MIT chosen)
+    rationale: Crate Cargo.toml declares 'Apache-2.0 OR MIT'. We comply via MIT. The source files' SPDX-License-Identifier markers reflect the Apache-2.0 alternative. Verified via cargo metadata 2026-07-28.
+    files with SPDX markers: 16
