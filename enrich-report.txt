@@ -3,14 +3,14 @@ vAIdeo.bot SBOM enrichment — processing report
 ================================================================
 
 Counts by status:
-  enriched: 1080
+  enriched: 1094
   unresolvable-license: 2
 
 Skip math:
-  total_in_sbom: 1082
-  processed: 1082
+  total_in_sbom: 1096
+  processed: 1096
   skipped: 0
-  enriched: 1080
+  enriched: 1094
   failed: 2
 
 Per-component (non-success rows only):
@@ -19,11 +19,11 @@ Per-component (non-success rows only):
   [unresolvable-license] vaideo_nodes main (ComfyUI Nodes): unresolvable
 
 Source-tag distribution (enriched components):
-  concatenated-dual: 2
-  longest-file: 36
-  matched: 793
-  spdx-canonical-fallback: 249
+  concatenated-dual: 3
+  longest-file: 30
+  matched: 842
+  spdx-canonical-fallback: 219
 
 Evidence pass (file-level SPDX markers from cached tarballs):
-  components with evidence:   31 / 1080 (2.9% of enriched)
-  source files contributing:  712
+  components with evidence:   35 / 1094 (3.2% of enriched)
+  source files contributing:  695
