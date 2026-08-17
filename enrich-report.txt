@@ -20,10 +20,10 @@ Per-component (non-success rows only):
 
 Source-tag distribution (enriched components):
   concatenated-dual: 3
-  longest-file: 30
-  matched: 842
-  spdx-canonical-fallback: 219
+  longest-file: 40
+  matched: 884
+  spdx-canonical-fallback: 167
 
 Evidence pass (file-level SPDX markers from cached tarballs):
-  components with evidence:   35 / 1094 (3.2% of enriched)
-  source files contributing:  695
+  components with evidence:   36 / 1094 (3.3% of enriched)
+  source files contributing:  742
